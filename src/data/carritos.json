@@ -1,0 +1,42 @@
+[
+  {
+    "products": [
+      {
+        "id": 1,
+        "title": "Frijoles",
+        "code": "1234568",
+        "price": 50.25,
+        "status": false,
+        "stock": 10,
+        "category": "legumbres",
+        "thumbnails": [
+          "sdf",
+          "asdas",
+          "asdasd"
+        ],
+        "quantity": 1
+      }
+    ],
+    "id": 1
+  },
+  {
+    "products": [
+      {
+        "id": 1,
+        "title": "Frijoles",
+        "code": "1234568",
+        "price": 50.25,
+        "status": false,
+        "stock": 10,
+        "category": "legumbres",
+        "thumbnails": [
+          "sdf",
+          "asdas",
+          "asdasd"
+        ],
+        "quantity": 6
+      }
+    ],
+    "id": 2
+  }
+]

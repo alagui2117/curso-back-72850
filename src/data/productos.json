@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Frijoles",
+    "code": "1234568",
+    "price": 50.25,
+    "status": true,
+    "stock": 10,
+    "category": "legumbres",
+    "thumbnails": [
+      "sdf",
+      "asdas",
+      "asdasd"
+    ],
+    "id": 1
+  }
+]
