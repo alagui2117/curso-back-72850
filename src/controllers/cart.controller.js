@@ -58,10 +58,7 @@ router.get("/:cid", (req, res ) => {
 
 router.post("/", (req, res ) => {
     const body = req.body
-    const  listField = [
-        "products",
-    
-    ]
+    const  listField = []
     const error = validateFieldsInBody(body,listField)
     if (error) {
         res.json(error)

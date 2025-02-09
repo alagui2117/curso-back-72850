@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Productos</title>
+</head>
+<body>
+  
+
+  <form method="POST">
+
+    <div>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title">
+    </div>
+    <div>
+        <label for="">Code</label>
+        <input type="text" id="code" name="code">
+    </div>
+    <div>
+        <label for="">Price</label>
+        <input type="number" id="price" name="price">
+    </div>
+    <div>
+        <label for="stock">Stock</label>
+        <input type="number" id="stock" name="stock">
+    </div>
+    <div>
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category">
+    </div>
+
+    <div>
+        <button type="submit" onclick="sendProduct(event)">Enviar</button>
+    </div>
+
+  </form>
+
+        <ul  id="product_list">
+                {{#each productos}} 
+                    <li>{{this.title}}  - {{this.stock}} - {{this.price}} - {{this.category}}   <a onclick="deleteProduct({{this.id}})">X</a> </li>
+                {{/each}}
+        </ul>
+      
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+
+    <script>
+        var socket = io("http://localhost:3001/");
+        function deleteProduct(id){
+            socket.emit("delete-product", {id}) 
+            
+            
+        }
+        function sendProduct(e){
+          
+            event.preventDefault()
+            var formData = {
+                title: document.getElementById('title').value,
+                code: document.getElementById('code').value,
+                price: document.getElementById('price').value,
+                stock: document.getElementById('stock').value,
+                category: document.getElementById('category').value
+                };
+            console.log(formData)
+
+            socket.emit("add-product", formData)    
+
+        }
+        socket.on('get-product', (productList) => {
+            const productListContainer = document.getElementById('product_list');
+            console.log(productListContainer)
+            productListContainer.innerHTML = ''; // Limpiar la lista actual
+
+            productList.forEach(product => {
+            const productItem = document.createElement('li');
+            productItem.textContent = `${product.title} - ${product.code} - ${product.price} - ${product.stock} - ${product.category}` ;
+            const deleteLink = document.createElement('a');
+            deleteLink.href = "#";
+            deleteLink.textContent = " X";
+            deleteLink.onclick = () => deleteProduct(product.id);
+            productItem.appendChild(deleteLink);
+            productListContainer.appendChild(productItem);
+            });
+        })
+
+    </script>
+</body>
+</html>

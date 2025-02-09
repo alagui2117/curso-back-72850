@@ -5,22 +5,26 @@ const fs = require('fs');
 
 const pathProducts = "./src/data/productos.json"
 let productos = JSON.parse(fs.readFileSync(pathProducts))
+const productService = require("../service/product.service")
+
 router.get("/", (req, res ) => {
-
     const limit = req.query.limit ? req.query.limit : productos.length
-    const arregloLimitado = productos.slice(0, limit)
-
-    res.json(arregloLimitado)
+    const productLimit = productService.getProducts(limit)
+    res.json(productLimit)
 })
 router.get("/:pid", (req, res ) => {
     
     const pid = req.params.pid
-    productos.find(item => item.id == pid)
+    const product = productService.getProductsById(pid)
+    if (!product){
+        return res.json({"error": "producto_no_encontrado"})
+    }
 
-    res.json(productos.find(item => item.id == pid))
+    res.json({product})
 })
 
 router.post("/", (req, res ) => {
+    console.log(req.body)
     const body = req.body
     const  listField = [
         "title",
@@ -34,15 +38,9 @@ router.post("/", (req, res ) => {
         res.json(error)
         return
     }
-    if (!body.status){
-        body.status = true
-    }
-    const id = generateId()
-    body.id = id
-
-    productos.push(body)
-    saveFile(pathProducts, productos)
+    const id= productService.addProduct(body)
     res.json({save: "OK", id: id})
+   
 })
 
 router.put("/:pid", (req, res ) => {
@@ -92,13 +90,11 @@ router.delete("/:pid", (req, res ) => {
     if (!pid){
         res.json({"error":"id necesario para actualizar"})
     }
-    const product = productos.find(item => item.id == pid)
+    const product = productService.deleteProduct(pid)
     if (!product){
         res.json({"error":"producto inexistente"})
         return;
     }
-    productos = productos.filter(item => item.id != pid)
-    saveFile(pathProducts, productos)
     res.json({"delete":"OK", producto: product})
 })
 
