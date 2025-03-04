@@ -77,7 +77,7 @@ router.put("/:pid", async (req, res ) => {
         return;
     }
 
-    await Product.updateOne({_id: pid}, body).exec()
+    await Product.updateOne({id: pid}, body).exec()
     res.json({"update":"OK"})
 })
 

@@ -79,7 +79,7 @@ async function deleteProduct(id){
     if (!product){
         return null
     }
-    return await Product.deleteOne({_id: id}).exec()
+    return await Product.deleteOne({id: id}).exec()
 
 }
 module.exports = {
