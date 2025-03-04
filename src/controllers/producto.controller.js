@@ -4,16 +4,18 @@ const router = express.Router()
 const fs = require('fs');
 
 const pathProducts = "./src/data/productos.json"
-let productos = JSON.parse(fs.readFileSync(pathProducts))
+let productos = []
 const productService = require("../service/product.service")
 
-router.get("/", (req, res ) => {
-    const limit = req.query.limit ? req.query.limit : productos.length
-    const productLimit = productService.getProducts(limit)
+router.get("/", async (req, res ) => {
+    const limit = req.query.limit  ? req.query.limit : 10
+    const page = req.query.page ? req.query.page : 1
+    const query = req.query.query ? req.query.query : {}
+    const sort =  req.query.sort ? req.query.sort : {}
+    const productLimit = await productService.getProductsWithParameters(limit, page, query, sort)
     res.json(productLimit)
 })
 router.get("/:pid", (req, res ) => {
-    
     const pid = req.params.pid
     const product = productService.getProductsById(pid)
     if (!product){
@@ -24,7 +26,7 @@ router.get("/:pid", (req, res ) => {
 })
 
 router.post("/", (req, res ) => {
-    console.log(req.body)
+
     const body = req.body
     const  listField = [
         "title",

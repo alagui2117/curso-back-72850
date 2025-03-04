@@ -26,9 +26,22 @@ router.get("/", (req,res) => {
   return res.render("realtime", {productos})
 })
 io.on('connection', (socket) => {
-    console.log('a user connected');
+
     socket.on('add-product', (data) => {
-    
+
+        const  listField = [
+            "title",
+            "code",
+            "price",
+            "stock",
+            "category"
+        ]
+
+        const error = validateFieldsInBody(data,listField)
+        if (error) {
+            io.emit("error-add-product", error)
+            return
+        }
       productService.addProduct(data)
       io.emit("get-product",productService.getProducts(0))
     });
@@ -38,13 +51,27 @@ io.on('connection', (socket) => {
       io.emit("get-product",productService.getProducts(0))
     });
     socket.on('disconnect', () => {
-      console.log('user disconnected');
+
     });
   
 });
+
+function validateFieldsInBody(body, listFields){
+
+    let error;
+    listFields.forEach(element => {
+
+        if (!(element in body) || body[element] == ""){
+
+            error =  {"error": `Falta el campo o no debe ser vacio ${element}`}
+            return
+        }
+
+    });
+    return error;
+}
   
 server.listen(3001, () =>{
-  console.log("inicio del socket io")
 })
   
 

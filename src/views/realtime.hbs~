@@ -88,7 +88,7 @@
         socket.on("error-add-product", (err) =>{
             sweetAlert.fire({
                 title: 'Error!',
-                text: err.error,
+                text: err,
                 icon: 'error',
                 confirmButtonText: 'Cool'
             })
