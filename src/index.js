@@ -72,7 +72,10 @@ app.use(router)
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 try {
   mongoose.connect(
-      "mongodb+srv://devsis2330:WO4mKu9JatyUcuqm@coder.tyfjv.mongodb.net/coder?retryWrites=true&w=majority"
+      "mongodb://127.0.0.1:27017/coder",
+      {
+
+      }
   ).then(() => {
     console.log("conectado a mongo")
     app.listen(port, () => {

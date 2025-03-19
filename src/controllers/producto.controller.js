@@ -36,6 +36,7 @@ router.post("/", async(req, res ) => {
         "code",
         "price",
         "stock",
+        "description",
         "category"
     ]
     const error = validateFieldsInBody(body,listField)
